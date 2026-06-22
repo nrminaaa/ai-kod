@@ -82,17 +82,8 @@ are in y (target).
 import numpy as np
 from sklearn.datasets import load_iris
 
-# 1. Load the dataset
 iris = load_iris()
-y = iris.target
-
-# 2. Count how many samples of each class are in y
-classes, counts = np.unique(y, return_counts=True)
-
-# 3. Print the results
-for cls, count in zip(classes, counts):
-    print(f"Class {cls} ({iris.target_names[cls]}): {count} samples")
-
+print(np.bincount(iris.target))
 
 
 Bilet 6;
@@ -236,12 +227,12 @@ train_test_split.
 from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
 
-# Load the diabetes dataset
+# Dataseti yükləyirik və birbaşa 75/25 nisbətində bölürük
 X, y = load_diabetes(return_X_y=True)
-
-# Split into train (75%) and test (25%) sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 
+# Nəticələri yoxlayırıq
+print(f"Train: {X_train.shape} | Test: {X_test.shape}")
 
 Bilet 14;
 
@@ -277,18 +268,16 @@ Bilet 16;
 
 Python (sklearn): Given y_true=[0,1,1,0,1], y_pred=[0,1,0,0,1], compute precision in plain Python
 (without sklearn). 
-
+ 
 y_true = [0, 1, 1, 0, 1]
 y_pred = [0, 1, 0, 0, 1]
+true_positives = sum(1 for yt, yp in zip(y_true, y_pred) if yp == 1 and yt == 1)
 
-# TP: h?m h?qiqi, h?m d? t?xmin 1 olanlar
-tp = sum(t == 1 and p == 1 for t, p in zip(y_true, y_pred))
-# Pozitiv t?xminl?rin ümumi say? (TP + FP)
-pred_positives = sum(p == 1 for p in y_pred)
+predicted_positives = sum(1 for yp in y_pred if yp == 1)
 
-precision = tp / pred_positives if pred_positives > 0 else 0
+precision = true_positives / predicted_positives if predicted_positives > 0 else 0
+
 print(f"Precision: {precision}")
-
 
 Bilet 17;
 
@@ -314,13 +303,17 @@ f1_score.
 
 from sklearn.metrics import accuracy_score, f1_score
 
+# Given data
 y_true = [1, 1, 0, 0]
 y_pred = [1, 0, 0, 0]
 
-# Calculate and print the metrics
-print(f"Accuracy Score: {accuracy_score(y_true, y_pred)}")
-print(f"F1 Score: {f1_score(y_true, y_pred):.4f}")
+# Compute metrics
+accuracy = accuracy_score(y_true, y_pred)
+f1 = f1_score(y_true, y_pred)
 
+# Print results
+print(f"Accuracy Score: {accuracy}")
+print(f"F1 Score: {f1}")
 
 
 Bilet 19;
